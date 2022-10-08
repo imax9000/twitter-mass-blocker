@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body class="browser-style">
+
+  <button type="button" id="save" class="browser-style">Save</button>
+  <div id="confirmation" style="height: 2em;"></div>
+
+  <form id="options" class="browser-style">
+    <fieldset class="browser-style">
+      <legend>Options for all browser instances (via account sync)</legend>
+      <fieldset disabled class="browser-style">
+        <legend>Proxy host</legend>
+
+        <div class="browser-style" style="width: 100%;">
+          <label for="proxy_host">Twitter API proxy hostname</label>
+          <input type="text" id="proxy_host" name="proxy_host" value="" style="width: 100%;">
+        </div>
+
+        <p>Twitter API doesn't return <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
+            target="_blank">CORS</a> headers in the responses, which makes it unusable for the JavaScript code running
+          in
+          a browser. As a workaround, this extension requires you to specify a hostname of a proxy that will
+          forward all requests to api.twitter.com and add CORS headers to the responses.
+
+        <p>WARNING: make sure that you trust the proxy, because it will see all your traffic, including access tokens
+          with
+          the same permissions to your Twitter account as this extension.
+      </fieldset>
+    </fieldset>
+  </form>
+
+  <script src="browser-polyfill/browser-polyfill.min.js"></script>
+  <script src="options.js"></script>
+</body>
+
+</html>

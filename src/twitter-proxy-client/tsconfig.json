@@ -1,0 +1,6 @@
+{
+  "extends": "../../dist/bin/src/twitter-proxy-client/tsconfig_for_vscode.json",
+  "include": [
+    "*.spec.ts"
+  ],
+}

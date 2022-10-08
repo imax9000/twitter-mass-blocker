@@ -1,0 +1,45 @@
+{
+    "name": "twitter_mass_blocker",
+    "version": "0.1.0",
+    "private": true,
+    "devDependencies": {
+        "@bazel/bazelisk": "latest",
+        "@bazel/buildifier": "latest",
+        "@bazel/ibazel": "latest",
+        "@bazel/typescript": "^5.5.0",
+        "@types/assert": "^1.5.6",
+        "@types/crypto-js": "^4.1.1",
+        "@types/expect": "^24.3.0",
+        "@types/mocha": "^9.1.1",
+        "@types/sinon-chrome": "^2.2.11",
+        "mocha": "^10.0.0",
+        "run-script-os": "^1.1.6",
+        "sinon-chrome": "^3.0.1",
+        "ts-mocha": "^10.0.0",
+        "tsconfig-paths": "^4.0.0"
+    },
+    "scripts": {
+        "build": "run-script-os",
+        "build:win32": "bazel build --action_env=PATH //... && 7z x -y -ooutput dist\\bin\\twitter_mass_blocker.zip",
+        "build:default": "bazel build //... && ([ -d output ] || mkdir output) && bsdtar xf dist/bin/twitter_mass_blocker.zip -C output",
+        "watch": "run-script-os",
+        "watch:win32": "ibazel --run_command_after_success=\"7z x -y -ooutput dist\\\\bin\\\\twitter_mass_blocker.zip\" build --action_env=PATH //...",
+        "watch:default": "([ -d output ] || mkdir output); ibazel --run_command_after_success=\"bsdtar xf dist/bin/twitter_mass_blocker.zip -C output\" test //...",
+        "test": "bazel test //...",
+        "fmt": "buildifier -r .",
+        "sign": "yarn build && source .secrets/web-ext.sh && web-ext sign --channel=unlisted --source-dir=./output",
+        "upload": "for file in web-ext-artifacts/*.xpi; do gsutil cp $file gs://imax-web-dev/twitter_mass_blocker/${file##*-}; done && gsutil cp dist/bin/updates.json gs://imax-web-dev/twitter_mass_blocker/"
+    },
+    "dependencies": {
+        "@bazel/esbuild": "^5.5.0",
+        "@types/webextension-polyfill": "^0.8.3",
+        "any-json": "^3.1.0",
+        "axios": "^0.27.2",
+        "crypto-js": "^4.1.1",
+        "idb": "^7.0.2",
+        "twitter-types": "^0.26.0",
+        "typescript": "^4.7.2",
+        "web-ext": "^7.1.0",
+        "webextension-polyfill": "^0.9.0"
+    }
+}

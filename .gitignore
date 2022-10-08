@@ -1,0 +1,8 @@
+.bazelrc.user
+.secrets
+dist
+bazel-out
+node_modules
+output
+web-ext-artifacts
+*.log

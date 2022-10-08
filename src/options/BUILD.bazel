@@ -1,0 +1,21 @@
+load("//:defs.bzl", "js_library", "ts_project")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "sources",
+    srcs = glob(["*.ts"]),
+    composite = True,
+    declaration = True,
+    extends = "//src:tsconfig",
+    tsconfig = {},
+    deps = [
+        "//src/types",
+    ],
+)
+
+js_library(
+    name = "options",
+    package_name = "options",
+    deps = [":sources"],
+)

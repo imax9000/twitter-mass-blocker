@@ -1,0 +1,36 @@
+load("//:defs.bzl", "ts_project")
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "sources",
+    srcs = glob(["*.ts"]),
+    composite = True,
+    declaration = True,
+    extends = "//src:tsconfig",
+    tsconfig = {},
+    deps = [
+        "//src/options",
+        "//src/types",
+    ],
+)
+
+esbuild(
+    name = "options_js",
+    entry_point = "index.ts",
+    external = ["global"],
+    metafile = False,
+    output = "options.js",
+    sourcemap = "external",
+    target = "es6",
+    deps = [":sources"],
+)
+
+filegroup(
+    name = "options",
+    srcs = [
+        "options.html",
+        ":options_js",
+    ],
+)

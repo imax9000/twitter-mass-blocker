@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "composite": true,
+        "baseUrl": "./",
+        "paths": {
+            "*": [
+                "../dist/bin/external/npm/node_modules/*",
+                "../dist/bin/external/npm/node_modules/@types/*",
+                "../dist/bin/src/*",
+                "../dist/bin/src/types/*",
+                "../node_modules/types/*",
+            ],
+        },
+        "typeRoots": [
+            "../dist/bin/external/npm/node_modules/@types/",
+            "../dist/bin/src/types",
+        ],
+    },
+}

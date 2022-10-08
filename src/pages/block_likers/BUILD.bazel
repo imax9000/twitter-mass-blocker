@@ -1,0 +1,37 @@
+load("//:defs.bzl", "ts_project")
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "sources",
+    srcs = glob(["*.ts"]),
+    composite = True,
+    declaration = True,
+    extends = "//src:tsconfig",
+    tsconfig = {},
+    deps = [
+        "//src/credentials",
+        "//src/twitter-proxy-client",
+        "//src/types",
+        "@npm//twitter-types",
+    ],
+)
+
+esbuild(
+    name = "block_likers_js",
+    entry_point = "index.ts",
+    metafile = False,
+    output = "block_likers.js",
+    sourcemap = "external",
+    target = "es6",
+    deps = [":sources"],
+)
+
+filegroup(
+    name = "block_likers",
+    srcs = [
+        "block_likers.html",
+        ":block_likers_js",
+    ],
+)

@@ -1,0 +1,45 @@
+load("//:defs.bzl", "ts_project")
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "sources",
+    srcs = glob(["*.ts"]),
+    composite = True,
+    declaration = True,
+    extends = "//src:tsconfig",
+    tsconfig = {},
+    deps = [
+        "//src/credentials",
+        "//src/logging",
+        "//src/options",
+        "//src/state_structs",
+        "//src/twitter-proxy-client",
+        "//src/types",
+        "@npm//@types/crypto-js",
+        "@npm//axios",
+        "@npm//crypto-js",
+        "@npm//idb",
+        "@npm//twitter-types",
+    ],
+)
+
+esbuild(
+    name = "background_js",
+    entry_point = "index.ts",
+    external = ["types/*"],
+    metafile = False,
+    output = "background.js",
+    sourcemap = "external",
+    target = "es6",
+    deps = [":sources"],
+)
+
+filegroup(
+    name = "background",
+    srcs = [
+        "background.html",
+        ":background_js",
+    ],
+)

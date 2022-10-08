@@ -1,0 +1,74 @@
+load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
+load("@rules_pkg//pkg:mappings.bzl", "filter_directory", "pkg_files")
+
+genrule(
+    name = "manifest_no_version",
+    srcs = ["manifest.yaml"],
+    outs = ["manifest_no_version.json"],
+    cmd = "$(location @npm//any-json/bin:any-json) $< > $@",
+    tools = ["@npm//any-json/bin:any-json"],
+)
+
+genrule(
+    name = "manifest",
+    srcs = [
+        ":manifest_no_version",
+        "versions.list",
+    ],
+    outs = ["manifest.json"],
+    cmd = '''
+        jq ".version = \\"$$(head -n 1 $(location versions.list))\\"" \\
+            $(location :manifest_no_version) > $@
+    ''',
+)
+
+genrule(
+    name = "updates",
+    srcs = ["versions.list"],
+    outs = ["updates.json"],
+    cmd = '''
+    jq --raw-input --raw-output --slurp  \\
+        '{addons: {"twitter_mass_blocker@extension.imax.in.ua":{updates:
+            [
+                . | rtrimstr("\n") | split("\n")[]
+                    | {
+                        version: .,
+                        update_link: "https://storage.googleapis.com/imax-web-dev/twitter_mass_blocker/\\(.).xpi",
+                      }
+            ]
+        }}}' \\
+    $< > $@
+    ''',
+)
+
+pkg_zip(
+    name = "twitter_mass_blocker",
+    srcs = [
+        ":manifest",
+        ":sources",
+    ],
+)
+
+filter_directory(
+    name = "browser-polyfill",
+    src = "@npm//webextension-polyfill",
+    excludes = [
+        "LICENSE",
+        "package.json",
+        "README.md",
+        "dist/browser-polyfill.js",
+        "dist/browser-polyfill.js.map",
+    ],
+    renames = {
+        "browser-polyfill.min.js": "dist/browser-polyfill.min.js",
+        "browser-polyfill.min.js.map": "dist/browser-polyfill.min.js.map",
+    },
+)
+
+pkg_files(
+    name = "sources",
+    srcs = [
+        ":browser-polyfill",
+        "//src/pages",
+    ],
+)

@@ -1,0 +1,22 @@
+load("//:defs.bzl", "js_library", "ts_project")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "sources",
+    srcs = glob(["*.ts"]),
+    composite = True,
+    declaration = True,
+    extends = "//src:tsconfig",
+    tsconfig = {},
+    deps = [
+        "//src/state_structs",
+        "@npm//idb",
+    ],
+)
+
+js_library(
+    name = "logging",
+    package_name = "logging",
+    deps = [":sources"],
+)

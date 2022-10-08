@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Blocking likers</title>
+</head>
+
+<body>
+  <div>
+    <span id="username"></span><br />
+    <span id="text"></span><br />
+    Like count: <span id="like_count"></span>
+  </div>
+
+  <form id="options">
+    <fieldset>
+      <legend>Select action:</legend>
+
+      <div>
+        <input type="radio" id="block" name="action" value="block" checked>
+        <label for="block">Block</label>
+      </div>
+
+      <div>
+        <input type="radio" id="mute" name="action" value="mute">
+        <label for="mute">Mute</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Include:</legend>
+
+      <div>
+        <input type="checkbox" id="likers" name="likers" checked>
+        <label for="likers">Likers</label>
+      </div>
+      <div>
+        <input type="checkbox" id="retweeters" name="retweeters" checked>
+        <label for="retweeters">Non-quote retweeters</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Exclude:</legend>
+
+      <div>
+        <input type="checkbox" id="follows" name="follows" checked>
+        <label for="follows">People you follow</label>
+      </div>
+      <div>
+        <input type="checkbox" id="followers" name="followers" checked>
+        <label for="followers">People who follow you</label>
+      </div>
+    </fieldset>
+  </form>
+
+  <input type="button" id="start" value="Start">
+
+  <div id="confirmation"></div>
+
+  <script src="browser-polyfill/browser-polyfill.min.js"></script>
+  <script src="block_likers.js"></script>
+</body>
+
+</html>

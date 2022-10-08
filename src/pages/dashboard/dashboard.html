@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Twitter Mass Blocker dashboard</title>
+</head>
+
+<body>
+  <section id="operations">
+    <h1>Operations</h1>
+  </section>
+
+  <section id="alarms">
+    <h1>Alarms</h1>
+  </section>
+
+  <section id="storage">
+    <h1>Storage</h1>
+  </section>
+
+  <section style="width: 100%">
+    <h1>Logs</h1>
+    <textarea id="logs" rows="10" spellcheck="false" readonly style="width: 100%"></textarea>
+  </section>
+
+  <template id="alarm_tmpl">
+    <fieldset>
+      <legend class="name">alarm name</legend>
+      Next trigger: <span class="trigger_time"></span>
+    </fieldset>
+  </template>
+
+  <template id="operation_tmpl">
+    <fieldset>
+      <legend class="name">operation name</legend>
+      <pre class="state"></pre>
+    </fieldset>
+  </template>
+
+  <template id="queue_tmpl">
+    <fieldset>
+      <legend class="name">operation name</legend>
+      Queue length: <span class="length"></span>
+    </fieldset>
+  </template>
+
+  <template id="block_likers_tmpl">
+    <fieldset>
+      <legend class="name">operation name</legend>
+
+      <div>
+        <a class="tweet_link">Tweet link</a><br />
+        By <span class="username"></span>:<br />
+        <span class="text"></span><br /><br />
+        Like count: <span id="like_count"></span>
+      </div>
+      Collected:
+      <ul>
+        <li>Likers: <span class="likers"></span></li>
+        <li>Follows: <span class="follows"></span></li>
+        <li>Followers: <span class="followers"></span></li>
+      </ul>
+    </fieldset>
+  </template>
+
+  <template id="collect_block_mute_tmpl">
+    <fieldset>
+      <legend class="name">operation name</legend>
+
+      <div>
+        Collected users: <span class="count"></span>
+      </div>
+    </fieldset>
+  </template>
+
+  <template id="block_list_tmpl">
+    <fieldset>
+      <legend class="name"></legend>
+
+      <div>
+        Number of users: <span class="count"></span><br />
+        Cached successful requests: <span class="cached_count"></span>
+      </div>
+    </fieldset>
+  </template>
+
+  <script src="browser-polyfill/browser-polyfill.min.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+
+</html>

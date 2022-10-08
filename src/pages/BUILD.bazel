@@ -1,0 +1,11 @@
+filegroup(
+    name = "pages",
+    srcs = [
+        "//src/pages/background",
+        "//src/pages/block_likers",
+        "//src/pages/dashboard",
+        "//src/pages/options",
+        "//src/pages/popup",
+    ],
+    visibility = ["//visibility:public"],
+)

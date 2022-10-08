@@ -1,0 +1,51 @@
+load("//:defs.bzl", "js_library", "ts_project")
+load("@npm//ts-mocha:index.bzl", "ts_mocha_test")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "sources",
+    srcs = glob(
+        ["*.ts"],
+        exclude = ["*.spec.ts"],
+    ),
+    composite = True,
+    declaration = True,
+    extends = "//src:tsconfig",
+    tsconfig = {},
+    deps = [
+        "//src/options",
+        "//src/types",
+        "@npm//axios",
+        "@npm//twitter-types",
+    ],
+)
+
+js_library(
+    name = "twitter-proxy-client",
+    package_name = "twitter-proxy-client",
+    deps = [":sources"],
+)
+
+ts_mocha_test(
+    name = "test",
+    size = "small",
+    args = [
+        "--paths",
+        "--file",
+        "patch_global_for_tests.js",
+        "-p",
+        "../../$(location :tsconfig_for_tests.json)",
+        "*.spec.ts",
+    ],
+    chdir = package_name(),
+    data = [
+        ":tsconfig_for_tests.json",
+        "patch_global_for_tests.js",
+        "//src:tsconfig",
+        ":sources",
+        "@npm//typescript",
+        "@npm//tsconfig-paths",
+        "@npm//sinon-chrome",
+    ] + glob(["*.spec.ts"]),
+)

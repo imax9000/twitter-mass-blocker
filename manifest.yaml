@@ -1,0 +1,25 @@
+manifest_version: 2
+name: Twitter mass blocker
+browser_specific_settings:
+  gecko:
+    id: "twitter_mass_blocker@extension.imax.in.ua"
+    update_url: 'https://storage.googleapis.com/imax-web-dev/twitter_mass_blocker/updates.json'
+permissions:
+  - "alarms"
+  - "menus"
+  - "identity"
+  - "storage"
+  - "unlimitedStorage"
+  # Host permissions are required for us to get additional details in menus.onShown handler
+  - "https://twitter.com/*"
+  - "https://tweetdeck.twitter.com/*"
+background:
+  persistent: false
+  page: "background.html"
+browser_action:
+  browser_style: true
+  default_title: "Twitter Mass Blocker"
+  default_popup: "popup.html"
+options_ui:
+  page: "options.html"
+  browser_style: true

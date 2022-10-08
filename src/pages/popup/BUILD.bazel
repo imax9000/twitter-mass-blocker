@@ -1,0 +1,36 @@
+load("//:defs.bzl", "ts_project")
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "sources",
+    srcs = glob(["*.ts"]),
+    composite = True,
+    declaration = True,
+    extends = "//src:tsconfig",
+    tsconfig = {},
+    deps = [
+        "//src/twitter-proxy-client",
+        "//src/types",
+    ],
+)
+
+esbuild(
+    name = "popup_js",
+    entry_point = "index.ts",
+    external = ["types/*"],
+    metafile = False,
+    output = "popup.js",
+    sourcemap = "external",
+    target = "es6",
+    deps = [":sources"],
+)
+
+filegroup(
+    name = "popup",
+    srcs = [
+        "popup.html",
+        ":popup_js",
+    ],
+)
